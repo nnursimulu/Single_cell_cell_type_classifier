@@ -1,1 +1,1 @@
-# Single-cel cell-type classifier
+# Single-cell cell-type classifier
