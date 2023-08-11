@@ -8,9 +8,9 @@ The overall data consists of the 1000 most highly-expressed genes from the 68K P
 
 ## Data splitting
 
-Run split_into_train_and_test.py to split the count matrix and labels into training, validation and test sets.  Specify the location of the input folder as the one containing count_matrix.in and class_labels.in (eg: raw_data), and the output folder where the split data will be written (PROCESSED_DATA).
+Run split_into_train_and_test.py to split the count matrix and labels into training, validation and test sets.  Specify the location of the input folder as the one containing count_matrix.in and class_labels.in (eg: raw_data), and the output folder where the split data will be written (eg: processed_data).
 
-split_into_train_and_test.py --input_folder DATA --output_folder PROCESSED_DATA  
+split_into_train_and_test.py --input_folder raw_data --output_folder processed_data  
 
 ## Dependencies
 
