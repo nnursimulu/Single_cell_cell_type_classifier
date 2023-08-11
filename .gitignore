@@ -6,3 +6,6 @@ raw_data
 
 # Ignore folder with processed data for training.
 processed_data
+
+# Ignore folder with results
+results
