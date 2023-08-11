@@ -1,0 +1,8 @@
+# Ignore experiment folder
+experiment
+
+# Ignore folder with all the data we are going to use.
+raw_data
+
+# Ignore folder with processed data for training.
+processed_data
