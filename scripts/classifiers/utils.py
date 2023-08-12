@@ -1,5 +1,39 @@
 import pickle
 
+def parse_out_cv_accuracy_for_data_subsection(string):
+    """Read out cross-validation result for a data subsection from string.
+    
+    Parameters:
+    string: (str) line written out by append_cv_result_for_data_subsection
+
+    Returns:
+    fold_i: (int) data subsection index.
+    setting: (str) hyperparameter setting.
+    accuracy: (float) accuracy for this hyperparameter setting over this data subsection.
+    """
+
+    split = string.split("\t")
+    fold_i = int(split[0].split("=")[1])
+    setting = "\t".join(split[1:-1])
+    accuracy = float(split[-1])
+    return fold_i, setting, accuracy
+
+
+def append_cv_result_for_data_subsection(fold_i, setting, accuracy, filename):
+    """Write out cross-validation result for a data subsection.
+    
+    Parameters:
+    fold_i: (str) data subsection index.
+    setting: (str) hyperparameter setting.
+    accuracy: (float) accuracy for this hyperparameter setting over this data subsection.
+    filename: (str) path to file where this result will be written.
+    """
+
+    with open(filename, "a") as writer:
+        info = "\t".join(["Subsection="+str(fold_i), setting, str(accuracy)])
+        writer.write(info + "\n")
+
+
 def write_out_summarized_accuracy(dict_setting_to_accuracy, output_file):
     """Write out summarized accuracy across different settings to output file
     

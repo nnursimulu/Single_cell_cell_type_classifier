@@ -12,13 +12,13 @@ if __name__ == '__main__':
                         required=True)
     parser.add_argument("--results_file", type=str, help="Absolute path to file that will contain the results",
                         required=True)
-    parser.add_argument("--c_value", type=float, help="Value of the C-regularization parameter",
+    parser.add_argument("--c_value", type=float, help="Value of the C-regularization parameter; need string that can be converted to float",
                         required=True)
-    parser.add_argument("--is_l1", type=bool, help="True to try l1 regularization, l2 otherwise",
+    parser.add_argument("--is_l1", type=int, help="1 to try l1 regularization, 0 otherwise",
                         required=True)
-    parser.add_argument("--subsection_of_data", choices=[0, 1, 2, 3, 4], \
+    parser.add_argument("--subsection_of_data", type=int, \
         help="On which subsection of data to train and test classifiers; specify int from 0 to 4.", required=True)
-    parser.add_argument("--is_balanced", type=bool, help="True to build a balanced classifier, False otherwise.", required=True)
+    parser.add_argument("--is_balanced", type=int, help="1 to build a balanced classifier, 0 otherwise.", required=True)
 
     args = parser.parse_args()
     training_folder = args.training_folder
@@ -28,15 +28,27 @@ if __name__ == '__main__':
     fold_i = args.subsection_of_data
     is_balanced = args.is_balanced
 
-    if is_l1:
+    if is_l1 not in [0, 1]:
+        raise Exception("Incorrect value of is_l1")
+    if fold_i not in [0, 1, 2, 3, 4]:
+        raise Exception("Incorrect value of subsection_of_data")
+    if is_balanced not in [0, 1]:
+        raise Exception("Incorrect value of is_balanced")
+
+    if is_l1==1:
         penalty_value = "l1"
     else:
         penalty_value = "l2"
 
-    if is_balanced:
+    if is_balanced==1:
         class_weight_value = 'balanced'
     else:
         class_weight_value = None
+
+    try:
+        c_value = float(c_value)
+    except:
+        raise Exception("C-value cannot be converted to float.")
 
     # Create the results directory if it does not exist yet.
     os.makedirs(os.path.dirname(results_file), exist_ok=True)
@@ -54,7 +66,12 @@ if __name__ == '__main__':
     test_label_IDs = utils.unpickle_object(prefix_file + "_test_label_IDs.pkl")
 
     # Train the SVM classifier, with normalized features.
-    clf = make_pipeline(StandardScaler(), LinearSVC(random_state=0, penalty=penalty_value, C=c_value, class_weight=class_weight_value))
+    dual_val=True
+    if penalty_value == "l1":
+        dual_val=False # The combination of penalty='l1' and loss='squared_hinge' are not supported when dual=True
+    # Increase maximum number of iterations because otherwise no convergence.
+    clf = make_pipeline(StandardScaler(), LinearSVC(random_state=0, dual=dual_val, penalty=penalty_value, \
+        C=c_value, class_weight=class_weight_value, max_iter=5000))
     clf.fit(training_fvs, training_label_IDs)
 
     # Predict labels.
@@ -62,6 +79,5 @@ if __name__ == '__main__':
     accuracy = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
     
     # Write out results.
-    with open(results_file, "a") as writer:
-        setting = " ".join(["Subsection="+str(fold_i), "C="+str(c_value), "penalty="+str(penalty_value), "class_weight="+str(class_weight_value)])
-        writer.write(setting + "\t" + str(accuracy) + "\n")
+    setting = " ".join(["C="+str(c_value), "penalty="+str(penalty_value), "class_weight="+str(class_weight_value)])
+    utils.append_cv_result_for_data_subsection(fold_i, setting, accuracy, results_file)
