@@ -10,14 +10,16 @@ if __name__ == '__main__':
                         required=True)
     parser.add_argument("--results_folder", type=str, help="Absolute path to folder that will contain the results",
                         required=True)
-    parser.add_argument("--has_balanced_trees", type=bool, help="Whether the trees of the forest are to be balanced or not",
+    parser.add_argument("--has_balanced_trees", type=int, help="Whether the trees of the forest are to be balanced or not; 1=balanced, 0=not",
                         required=True)
 
     args = parser.parse_args()
     training_folder = args.training_folder
     results_folder = args.results_folder
     has_balanced_trees = args.has_balanced_trees
-    if has_balanced_trees:
+    if has_balanced_trees not in [0, 1]:
+        raise Exception("Invalid value for whether trees should be balanced or not")
+    if has_balanced_trees==1:
         balance_value = "balanced"
     else:
         balance_value = None
