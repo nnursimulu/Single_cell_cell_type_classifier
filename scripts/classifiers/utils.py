@@ -1,7 +1,41 @@
 import pickle
+import tensorflow as tf
 
 ACCURACY = "ACCURACY"
 MACRO_F1 = "MACRO_F1"
+
+def transform_from_nn_pred(logits):
+    """Get neural net predictions from logits
+    
+    Parameters:
+    logits: (numpy.ndarray) output logits from neural net
+
+    Return:
+    Class labels
+    """
+
+    list_tensors = tf.argmax(input=logits, axis=1)
+    list_values = []
+    for tensor in list_tensors:
+        list_values.append(tensor.numpy())
+    return list_values
+
+
+def is_int(string):
+    """Returns True is string is an integer.
+    
+    Parameter:
+    string: str
+    
+    Returns:
+    True iff string is an integer"""
+
+    try:
+        int(string)
+        return True
+    except:
+        return False
+
 
 def parse_out_cv_accuracy_for_data_subsection(string):
     """Read out cross-validation result for a data subsection from string.
