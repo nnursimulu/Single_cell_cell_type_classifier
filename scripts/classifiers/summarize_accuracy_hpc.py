@@ -22,8 +22,8 @@ if __name__ == '__main__':
             line = line.strip()
             if line == "":
                 continue
-            fold_i, setting, accuracy = utils.parse_out_cv_accuracy_for_data_subsection(line)
-            utils.update_accuracy_dict(dict_k_to_section_to_accuracy, setting, fold_i, accuracy)
+            fold_i, setting, accuracy, macro_f1 = utils.parse_out_cv_accuracy_for_data_subsection(line)
+            utils.update_accuracy_dict(dict_k_to_section_to_accuracy, setting, fold_i, accuracy, macro_f1)
 
     dict_k_to_accuracy = utils.summarize_accuracy_across_hyperparameters(dict_k_to_section_to_accuracy)
     utils.write_out_summarized_accuracy(dict_k_to_accuracy, output_file)

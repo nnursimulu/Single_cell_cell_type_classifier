@@ -48,9 +48,9 @@ if __name__ == '__main__':
             knn.fit(training_fvs, training_label_IDs)
 
             predicted_label_IDs = knn.predict(test_fvs)
-            accuracy = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
+            accuracy, macro_f1, _, _, _ = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
             
-            utils.update_accuracy_dict(dict_k_to_section_to_accuracy, str(k_value), fold_i, accuracy)
+            utils.update_accuracy_dict(dict_k_to_section_to_accuracy, str(k_value), fold_i, accuracy, macro_f1)
         fold_i += 1
 
     # Summarize the value of the accuracy across different sections of the data, and write out results.

@@ -76,8 +76,8 @@ if __name__ == '__main__':
 
     # Predict labels.
     predicted_label_IDs = clf.predict(test_fvs)
-    accuracy = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
+    accuracy, macro_f1, _, _, _ = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
     
     # Write out results.
     setting = " ".join(["C="+str(c_value), "penalty="+str(penalty_value), "class_weight="+str(class_weight_value)])
-    utils.append_cv_result_for_data_subsection(fold_i, setting, accuracy, results_file)
+    utils.append_cv_result_for_data_subsection(fold_i, setting, accuracy, macro_f1, results_file)

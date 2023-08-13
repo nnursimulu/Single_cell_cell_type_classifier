@@ -63,10 +63,10 @@ if __name__ == '__main__':
                 rf.fit(training_fvs, training_label_IDs)
 
                 predicted_label_IDs = rf.predict(test_fvs)
-                accuracy = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
+                accuracy, macro_f1, _, _, _ = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
                 
                 setting = "num_trees=" + str(num_trees) + "\tmax_depth=" + str(curr_max_depth)
-                utils.update_accuracy_dict(dict_setting_to_section_to_accuracy, setting, fold_i, accuracy)
+                utils.update_accuracy_dict(dict_setting_to_section_to_accuracy, setting, fold_i, accuracy, macro_f1)
         fold_i += 1
 
     # Summarize the value of the accuracy across different sections of the data, and write out results.
