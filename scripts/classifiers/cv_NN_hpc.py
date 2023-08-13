@@ -88,10 +88,6 @@ if __name__ == '__main__':
 
     # Predict labels.
     logits = model.predict(test_fvs)
-    list_tensors = tf.argmax(input=logits, axis=1)
-    list_values = []
-    for tensor in list_tensors:
-        list_values.append(tensor.numpy())
     predicted_label_IDs = utils.transform_from_nn_pred(logits)
     accuracy, macro_f1, _, _, _ = utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
     
