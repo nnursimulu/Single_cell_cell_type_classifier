@@ -67,6 +67,8 @@ if __name__ == '__main__':
     # Load id to label
     id_to_label = utils.unpickle_object(input_folder + "/id_to_label.pkl")
 
+    tf.random.set_seed(0)
+    
     ####################
     # Experiment 1: Do not normalize the data.
     training_fvs = np.array(training_fvs)

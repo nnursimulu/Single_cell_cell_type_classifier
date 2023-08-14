@@ -40,6 +40,8 @@ if __name__ == '__main__':
     fold_to_loss = {}
     fold_to_val_loss = {}
 
+    tf.random.set_seed(0)
+
     fold_i = 0
     while fold_i < 5:
         # Load the training feature vectors and corresponding labels for this round of cross-validation.

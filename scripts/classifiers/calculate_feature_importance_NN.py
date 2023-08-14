@@ -63,6 +63,7 @@ if __name__ == '__main__':
     training_label_IDs = np.array(training_label_IDs)
 
     # Create architecture of the network.
+    tf.random.set_seed(0)
     layers = []
     for num in [50, 25]:
         layers.append(tf.keras.layers.Dense(units=num, activation='relu'))
