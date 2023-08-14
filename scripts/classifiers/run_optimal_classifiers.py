@@ -9,72 +9,6 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 import tensorflow as tf
 
-def write_2d_matrix(dict_matrix, catID_to_category, writer):
-    """Write a 2D matrix out.
-    
-    Parameter:
-    dict_matrix: matrix of the form 'A': {'A': 'a_a', 'B': 'a_b', 'C': 'a_c'}, 
-                                            'B': {'A': 'b_a', 'B': 'b_b', 'C': 'b_c'}, 
-                                                'C': {'A': 'c_a', 'B': 'c_b', 'C': 'c_c'}
-    catID_to_category: (dict) id of category to name (eg: 'A' may stand for 'apple')
-    writer: open writer stream
-
-    Writes in the form 
-            A	B	C
-        A	a_a	a_b	a_c
-        B	b_a	b_b	b_c
-        C	c_a	c_b	c_c
-    If key is missing in inner dict, writes 0 in that cell.
-    """
-
-    categoryIDs = dict_matrix.keys()
-    header = "\t"
-    for cat_2 in categoryIDs:
-        header += "\t" + catID_to_category[cat_2]
-    writer.write(header + "\n")
-    for cat_1 in categoryIDs:
-        info = [catID_to_category[cat_1]]
-        for cat_2 in categoryIDs:
-            if cat_2 not in dict_matrix[cat_1]:
-                info.append("0")
-            else:
-                info.append(str(dict_matrix[cat_1][cat_2]))
-        writer.write("\t" + "\t".join(info) + "\n")
-
-
-def write_out_results(predicted_label_IDs, test_label_IDs, id_to_label, classifier_name, results_file):
-    """Calculate and write out performance results for a particular classifier.
-
-    Parameter:
-    predicted_label_IDs: list of (int) predicted label IDs/classes
-    test_label_IDs: list of (int) actual label IDs/classes
-    id_to_label: (dict) id of a label ID to name of label
-    classifier_name: (str) name of classifier in question
-    results_file: (str) file where results will be written.
-    """
-    
-    accuracy, macro_f1, id_to_precision, id_to_recall, observed_to_predicted_label = \
-        utils.compute_accuracy(predicted_label_IDs, test_label_IDs)
-    with open(results_file, "w") as writer:
-        writer.write("===============\nResults for " + classifier_name + "\n\n")
-        writer.write("*Accuracy: " + str(accuracy) + "\n")
-        writer.write("*Macro-F1: " + str(macro_f1) + "\n")
-        writer.write("*Label to precision and recall:\n")
-        writer.write("\tLabel\tPrecision\tRecall\n")
-        for curr_id, label in id_to_label.items():
-            precision, recall = "NA", "NA"
-            if curr_id in id_to_precision:
-                precision = str(id_to_precision[curr_id])
-            if curr_id in id_to_recall:
-                recall = str(id_to_recall[curr_id])
-            info = [label, precision, recall]
-            writer.write("\t" + "\t".join(info) + "\n")
-        writer.write("\n\n*Confusion matrix (row is actual num, column is predicted num):\n")
-        write_2d_matrix(observed_to_predicted_label, id_to_label, writer)
-    print ("Finished calculating performance for " + classifier_name)
-
-
-
 if __name__ == '__main__':
     
     parser = ArgumentParser(description="Train various classifiers on training data and test; write out the results.")
@@ -110,7 +44,7 @@ if __name__ == '__main__':
     knn = KNeighborsClassifier(n_neighbors=75)
     knn.fit(training_fvs, training_label_IDs)
     predicted_knn_label_IDs = knn.predict(test_fvs)
-    write_out_results(predicted_knn_label_IDs, test_label_IDs, id_to_label, "knn", knn_results_file)
+    utils.write_out_optimal_results(predicted_knn_label_IDs, test_label_IDs, id_to_label, "knn", knn_results_file)
 
     ############################################
     # Now, for RF classifier-balanced.
@@ -119,7 +53,7 @@ if __name__ == '__main__':
                     class_weight="balanced", random_state=0)
     rf_bal.fit(training_fvs, training_label_IDs)
     predicted_rf_bal_label_IDs = rf_bal.predict(test_fvs)
-    write_out_results(predicted_rf_bal_label_IDs, test_label_IDs, id_to_label, "RF-balanced", rf_bal_results_file)
+    utils.write_out_optimal_results(predicted_rf_bal_label_IDs, test_label_IDs, id_to_label, "RF-balanced", rf_bal_results_file)
 
     ############################################
     # Now, for RF classifier-not balanced.
@@ -128,7 +62,7 @@ if __name__ == '__main__':
                     class_weight=None, random_state=0)
     rf_bal.fit(training_fvs, training_label_IDs)
     predicted_rf_not_bal_label_IDs = rf_bal.predict(test_fvs)
-    write_out_results(predicted_rf_not_bal_label_IDs, test_label_IDs, id_to_label, "RF-not balanced", rf_bal_results_file)
+    utils.write_out_optimal_results(predicted_rf_not_bal_label_IDs, test_label_IDs, id_to_label, "RF-not balanced", rf_bal_results_file)
 
     ############################################
     # Now, for SVM-balanced
@@ -137,16 +71,16 @@ if __name__ == '__main__':
         C=0.1, class_weight="balanced", max_iter=5000))
     svm_bal.fit(training_fvs, training_label_IDs)
     predicted_svm_bal_label_IDs = svm_bal.predict(test_fvs)
-    write_out_results(predicted_svm_bal_label_IDs, test_label_IDs, id_to_label, "SVM-balanced", svm_bal_results_file)
+    utils.write_out_optimal_results(predicted_svm_bal_label_IDs, test_label_IDs, id_to_label, "SVM-balanced", svm_bal_results_file)
 
     ############################################
     # Now, for SVM-not balanced
     svm_not_bal_results_file = results_folder + "/OVERALL_SVM_None_results.out"
     svm_not_bal = make_pipeline(StandardScaler(), LinearSVC(random_state=0, dual=False, penalty="l1", \
-        C=0.1, class_weight="balanced", max_iter=5000))
+        C=0.1, class_weight=None, max_iter=5000))
     svm_not_bal.fit(training_fvs, training_label_IDs)
     predicted_svm_not_bal_label_IDs = svm_not_bal.predict(test_fvs)
-    write_out_results(predicted_svm_not_bal_label_IDs, test_label_IDs, id_to_label, "SVM-balanced", svm_not_bal_results_file)
+    utils.write_out_optimal_results(predicted_svm_not_bal_label_IDs, test_label_IDs, id_to_label, "SVM-not balanced", svm_not_bal_results_file)
 
     ############################################
     # Now, for neural net.
@@ -180,4 +114,4 @@ if __name__ == '__main__':
     model.fit(training_fvs, training_label_IDs, epochs=4)
     logits = model.predict(test_fvs)
     predicted_nn_labels = utils.transform_from_nn_pred(logits)
-    write_out_results(predicted_nn_labels, test_label_IDs, id_to_label, "NN", nn_results_file)
+    utils.write_out_optimal_results(predicted_nn_labels, test_label_IDs, id_to_label, "NN", nn_results_file)

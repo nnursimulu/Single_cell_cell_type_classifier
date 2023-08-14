@@ -4,7 +4,7 @@ The data used to build the single-cell cell-type classifiers comes from https://
 
 ## Raw data
 
-The overall data consists of the 1000 most highly-expressed genes from the 68K PBMC dataset.  Use the scripts from the folder scripts/preprocess to regenerate this data.  More specifically, first, run main_process_68k_pbmc.R from https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis, then, run the R script transform_data_from_r_to_python.R found in this folder.  The output count_matrix.in and class_labels.in are used for training and testing the classifiers in this project.
+The overall data consists of the 1000 most highly-expressed genes from the 68K PBMC dataset.  Use the scripts from the folder scripts/preprocess to regenerate this data.  More specifically, first, run main_process_68k_pbmc.R from https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis, then, run the R script transform_data_from_r_to_python.R found in this folder.  The output count_matrix.in and class_labels.in are used for training and testing the classifiers in this project.  ordered_gene_names.in may be used for data interpretation, and contains gene names by decreasing order of variability.
 
 ## Data splitting
 

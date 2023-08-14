@@ -4,6 +4,71 @@ import tensorflow as tf
 ACCURACY = "ACCURACY"
 MACRO_F1 = "MACRO_F1"
 
+def write_2d_matrix(dict_matrix, catID_to_category, writer):
+    """Write a 2D matrix out.
+    
+    Parameter:
+    dict_matrix: matrix of the form 'A': {'A': 'a_a', 'B': 'a_b', 'C': 'a_c'}, 
+                                            'B': {'A': 'b_a', 'B': 'b_b', 'C': 'b_c'}, 
+                                                'C': {'A': 'c_a', 'B': 'c_b', 'C': 'c_c'}
+    catID_to_category: (dict) id of category to name (eg: 'A' may stand for 'apple')
+    writer: open writer stream
+
+    Writes in the form 
+            A	B	C
+        A	a_a	a_b	a_c
+        B	b_a	b_b	b_c
+        C	c_a	c_b	c_c
+    If key is missing in inner dict, writes 0 in that cell.
+    """
+
+    categoryIDs = dict_matrix.keys()
+    header = "\t"
+    for cat_2 in categoryIDs:
+        header += "\t" + catID_to_category[cat_2]
+    writer.write(header + "\n")
+    for cat_1 in categoryIDs:
+        info = [catID_to_category[cat_1]]
+        for cat_2 in categoryIDs:
+            if cat_2 not in dict_matrix[cat_1]:
+                info.append("0")
+            else:
+                info.append(str(dict_matrix[cat_1][cat_2]))
+        writer.write("\t" + "\t".join(info) + "\n")
+
+
+def write_out_optimal_results(predicted_label_IDs, test_label_IDs, id_to_label, classifier_name, results_file):
+    """Calculate and write out overall performance results for a particular classifier.
+
+    Parameter:
+    predicted_label_IDs: list of (int) predicted label IDs/classes
+    test_label_IDs: list of (int) actual label IDs/classes
+    id_to_label: (dict) id of a label ID to name of label
+    classifier_name: (str) name of classifier in question
+    results_file: (str) file where results will be written.
+    """
+    
+    accuracy, macro_f1, id_to_precision, id_to_recall, observed_to_predicted_label = \
+        compute_accuracy(predicted_label_IDs, test_label_IDs)
+    with open(results_file, "w") as writer:
+        writer.write("===============\nResults for " + classifier_name + "\n\n")
+        writer.write("*Accuracy: " + str(accuracy) + "\n")
+        writer.write("*Macro-F1: " + str(macro_f1) + "\n")
+        writer.write("*Label to precision and recall:\n")
+        writer.write("\tLabel\tPrecision\tRecall\n")
+        for curr_id, label in id_to_label.items():
+            precision, recall = "NA", "NA"
+            if curr_id in id_to_precision:
+                precision = str(id_to_precision[curr_id])
+            if curr_id in id_to_recall:
+                recall = str(id_to_recall[curr_id])
+            info = [label, precision, recall]
+            writer.write("\t" + "\t".join(info) + "\n")
+        writer.write("\n\n*Confusion matrix (row is actual num, column is predicted num):\n")
+        write_2d_matrix(observed_to_predicted_label, id_to_label, writer)
+    print ("Finished calculating performance for " + classifier_name)
+
+
 def transform_from_nn_pred(logits):
     """Get neural net predictions from logits
     
