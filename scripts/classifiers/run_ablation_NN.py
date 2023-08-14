@@ -78,7 +78,7 @@ if __name__ == '__main__':
     test_label_IDs = np.array(test_label_IDs)
     
     model_not_normalized = create_model([50, 25], 0.2)
-    model_not_normalized.fit(training_fvs, training_label_IDs, epochs=4)
+    model_not_normalized.fit(training_fvs, training_label_IDs, epochs=8)
     predict_and_write_out(model_not_normalized, test_fvs, results_folder + "/ABLATION_NN_not_normalized.out")
 
     ####################
@@ -98,19 +98,19 @@ if __name__ == '__main__':
     # Experiment 3: Without dropout.
 
     model_no_dropout = create_model([50, 25], 0)
-    model_no_dropout.fit(training_fvs, training_label_IDs, epochs=4)
+    model_no_dropout.fit(training_fvs, training_label_IDs, epochs=8)
     predict_and_write_out(model_no_dropout, test_fvs, results_folder + "/ABLATION_NN_no_dropout.out")
 
     ####################
     # Experiment 4: Without second layer.
 
     model_shallow = create_model([50], 0.2)
-    model_shallow.fit(training_fvs, training_label_IDs, epochs=4)
+    model_shallow.fit(training_fvs, training_label_IDs, epochs=8)
     predict_and_write_out(model_shallow, test_fvs, results_folder + "/ABLATION_NN_shallow.out")
 
     ####################
     # Experiment 4: With fewer units in first layer.
 
     model_fewer_unit_1 = create_model([40, 25], 0.2)
-    model_fewer_unit_1.fit(training_fvs, training_label_IDs, epochs=4)
+    model_fewer_unit_1.fit(training_fvs, training_label_IDs, epochs=8)
     predict_and_write_out(model_fewer_unit_1, test_fvs, results_folder + "/ABLATION_NN_fewer_unit_1.out")

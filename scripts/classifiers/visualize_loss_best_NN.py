@@ -85,7 +85,6 @@ if __name__ == '__main__':
 
         fold_to_loss[fold_i] = history.history['loss']
         fold_to_val_loss[fold_i] = history.history['val_loss']
-
         fold_i += 1
 
     # Prepare plot to display loss.
@@ -93,9 +92,49 @@ if __name__ == '__main__':
     axes = fig.subplots(nrows=5, ncols=1)
     fig.suptitle("Training and validation loss over all data")
 
+    min_epochs = 100 # What's the smallest number of epochs?
     fold_i = 0
     while fold_i < 5:
         plt.subplot(5, 1, fold_i+1)
         plot_loss_over_folds(plt, fold_i ,fold_to_loss[fold_i], fold_to_val_loss[fold_i])
+        min_epochs = min(min_epochs, len(fold_to_loss[fold_i]))
         fold_i += 1
     plt.show()
+
+    # Now, get the average and the standard deviation of the loss over the entire training data.
+    avg_training_loss = []
+    avg_validation_loss = []
+    std_training_loss = []
+    std_validation_loss = []
+    # Go over each epoch, and get this info
+    epoch_i = 0
+    while epoch_i < min_epochs:
+        training_loss = []
+        validation_loss = []
+
+        fold_i = 0
+        while fold_i < 5:
+            training_loss.append(fold_to_loss[fold_i][epoch_i])
+            validation_loss.append(fold_to_val_loss[fold_i][epoch_i])
+            fold_i += 1
+
+        avg_training_loss_curr, std_training_loss_curr = np.mean(training_loss), np.std(training_loss)
+
+        avg_val_loss_curr, std_val_loss_curr = np.mean(validation_loss), np.std(validation_loss)
+
+        avg_training_loss.append(avg_training_loss_curr)
+        avg_validation_loss.append(avg_val_loss_curr)
+        std_training_loss.append(std_training_loss_curr)
+        std_validation_loss.append(std_val_loss_curr)
+        print (epoch_i, avg_training_loss[epoch_i], avg_validation_loss[epoch_i])
+        epoch_i += 1
+
+    # Now, plot the summarized information.
+    fig = plt.figure()
+    plt.errorbar(np.arange(min_epochs), avg_training_loss, std_training_loss, label='training')
+    plt.errorbar(np.arange(min_epochs), avg_validation_loss, std_validation_loss, label='validation')
+    plt.ylabel('average loss')
+    plt.xlabel('epoch number')
+    plt.legend(loc="upper right")
+    plt.show()
+

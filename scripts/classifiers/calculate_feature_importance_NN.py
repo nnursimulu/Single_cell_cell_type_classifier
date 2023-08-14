@@ -77,7 +77,7 @@ if __name__ == '__main__':
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), 
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
-    model.fit(training_fvs, training_label_IDs, epochs=4)
+    model.fit(training_fvs, training_label_IDs, epochs=8)
     
     # Create test vectors to find the importance of each feature.
     # Each vector has a 1 in a single column.

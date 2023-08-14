@@ -112,7 +112,7 @@ if __name__ == '__main__':
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), 
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
-    model.fit(training_fvs, training_label_IDs, epochs=4)
+    model.fit(training_fvs, training_label_IDs, epochs=8)
     logits = model.predict(test_fvs)
     predicted_nn_labels = utils.transform_from_nn_pred(logits)
     utils.write_out_optimal_results(predicted_nn_labels, test_label_IDs, id_to_label, "NN", nn_results_file)

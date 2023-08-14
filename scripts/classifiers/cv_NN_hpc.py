@@ -82,9 +82,11 @@ if __name__ == '__main__':
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
 
     # Stop the training when there is no improvement in validation loss for 10 consecutive epochs.
-    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+    callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
     history = model.fit(training_fvs, training_label_IDs, epochs=100, callbacks=[callback], \
         validation_data=(test_fvs, test_label_IDs))
+    # For debugging only, write out the maximum number of epochs to make sure keeps best model (doesn't if run till end).
+    print("DEBUG_epoch: " + nn_setting + ": " + str(len(history.history['loss'])))
 
     # Predict labels.
     logits = model.predict(test_fvs)
