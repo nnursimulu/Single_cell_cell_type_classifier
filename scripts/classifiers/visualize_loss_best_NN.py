@@ -126,7 +126,7 @@ if __name__ == '__main__':
         avg_validation_loss.append(avg_val_loss_curr)
         std_training_loss.append(std_training_loss_curr)
         std_validation_loss.append(std_val_loss_curr)
-        print (epoch_i, avg_training_loss[epoch_i], avg_validation_loss[epoch_i])
+        # print (epoch_i, avg_training_loss[epoch_i], avg_validation_loss[epoch_i])
         epoch_i += 1
 
     # Now, plot the summarized information.
