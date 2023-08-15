@@ -35,7 +35,7 @@ In addition to the dependencies required to run ``main_process_68k_pbmc.R``, the
 - tensorflow (2.4.1)
 - matplotlib (3.0.3)
 
-Tensorflow in my case was run without GPU, which however did not appear to affect performance in terms of speed.
+I used tensorflow on Niagara without GPU, which however did not appear to affect performance in terms of speed.
 
 ## References
 
