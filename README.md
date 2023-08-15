@@ -23,7 +23,7 @@ Cross-validation, test and analysis scripts are found in ``scripts/classifiers``
 
 ## Additional data
 
-My technical report refers to results of feature importance where I build feature vectors with a 1 for a feature/gene and 0 elsewhere, and assess the class predicted by the neural network classifier.  The file ``suppl/FEATURE_IMPORTANCE_gene_by_class.out`` contains the class ID predicted and the features/genes sorted in decreasing order of probability.  Therefore, the top entry indicates the gene most predictive of the class in question.  These results are preliminary and will require more systematic analyses before interpretation. 
+My technical report refers to results of feature importance where I build feature vectors with a 1 for a feature/gene and 0 elsewhere, and note the class predicted by the neural network classifier.  The file ``suppl/FEATURE_IMPORTANCE_gene_by_class.out`` contains the class ID predicted and the features/genes sorted in decreasing order of probability.  Therefore, the top entry indicates the gene most predictive of the class in question.  These results are preliminary and will require more systematic analyses before interpretation. 
 
 ## Dependencies
 
