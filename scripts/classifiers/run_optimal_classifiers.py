@@ -125,7 +125,7 @@ if __name__ == '__main__':
     model = tf.keras.Sequential(layers)
 
     # Use adaptive moment estimation for faster learning, and use logits to deal with numerical error.
-    # Stop learning at the 4th epoch.
+    # Stop learning at the 8th epoch.
     model.compile(
         optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), 
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True))
