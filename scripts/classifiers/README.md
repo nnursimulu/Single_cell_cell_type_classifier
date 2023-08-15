@@ -8,7 +8,7 @@ Define the value of ``RAW_DATA``--the path to the folder containing ``count_matr
 
 - k-nearest neighbour: Run ``cv_kNN.py`` with correct parameters. Produces ``$RESULTS/CV_knn.out``.
 - random forest: Run ``cv_RF.py`` with correct parameters.  Produces ``$RESULTS/CV_RF_balanced.out`` and ``$RESULTS/CV_RF_None.out`` (results for balanced and not balanced RF)
-- linear support machine: Optimized for HPC (SLURM).  Modify ``parallel_SVM_balanced_hpc.sh`` and ``parallel_SVM_not_balanced_hpc.sh`` and submit.  Each will run in parallel threads ``cv_SVM_hpc.py``, which trains SVM on one section of the data for one particular parameter.  When these processes done, ``summarize_accuracy_hpc.py`` will output the summarized value of performance metrics from ``CV_SVM_balanced_HPC.out`` or ``CV_SVM_not_balanced_HPC.out`` as ``CV_SVM_balanced_averaged.out`` or ``CV_SVM_not_balanced_averaged.out``
+- linear support vector machine: Optimized for HPC (SLURM).  Modify ``parallel_SVM_balanced_hpc.sh`` and ``parallel_SVM_not_balanced_hpc.sh`` and submit.  Each will run in parallel threads ``cv_SVM_hpc.py``, which trains SVM on one section of the data for one particular parameter.  When these processes done, ``summarize_accuracy_hpc.py`` will output the summarized value of performance metrics from ``CV_SVM_balanced_HPC.out`` or ``CV_SVM_not_balanced_HPC.out`` as ``CV_SVM_balanced_averaged.out`` or ``CV_SVM_not_balanced_averaged.out``
 - neural network: Optimized for HPC (SLURM).  Modify ``parallel_NN_hpc.sh`` and submit.  Runs ``cv_NN_hpc.py`` in parallel threads, produces ``CV_NN_HPC.out`` and summarizes results in ``CV_NN_averaged.out`` using ``summarize_accuracy_hpc.py``.
 
 ## Visualize loss on optimal neural network
