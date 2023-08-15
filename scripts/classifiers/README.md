@@ -13,7 +13,7 @@ Define the value of ``RAW_DATA``--the path to the folder containing ``count_matr
 
 ## Visualize loss on optimal neural network
 
-Run ``visualize_loss_best_NN.py`` to look at how training and validation loss evolve over epochs during cross-validation.  I used this script to determine the best epoch at which to stop learning.  I had to run this script on my computer to allow for graphic display, not supported by default by Niagara (using Python v3.10.6, tensorflow v2.13.0, matplotlib v3.7.2, numpy v1.24.2, sklearn v1.3.0).  In future, I will re-write these scripts to make sure they can be run on the same platform.
+Run ``visualize_loss_best_NN.py`` to look at how training and validation loss evolve over epochs during cross-validation (in model with optimal architecture).  I used this script to determine the best epoch at which to stop learning.  I had to run this script on my computer to allow for graphic display, not supported by default by Niagara (using Python v3.10.6, tensorflow v2.13.0, matplotlib v3.7.2, numpy v1.24.2, sklearn v1.3.0).  In future, I will re-write these scripts to make sure they can be run on the same platform.
 
 ## Test on held-out test set
 
