@@ -19,7 +19,7 @@ split_into_train_and_test.py --input_folder RAW_DATA --output_folder PROCESSED_D
 
 ### 3. Perform cross-validation, test and additional analyses
 
-Cross-validation, test and analysis scripts are found in ``scripts/classifiers``.  See the folder ``scripts`` for more details.
+Cross-validation, test and analysis scripts are found in ``scripts/classifiers``.  See the corresponding README for more details.
 
 ## Additional data
 
