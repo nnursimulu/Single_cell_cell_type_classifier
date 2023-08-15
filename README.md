@@ -17,7 +17,9 @@ Run ``scripts/preprocess/split_into_train_and_test.py`` to split the count matri
 split_into_train_and_test.py --input_folder RAW_DATA --output_folder PROCESSED_DATA  
 ````
 
-### 3. 
+### 3. Perform cross-validation, test and additional analyses
+
+Cross-validation, test and analysis scripts are found in ``scripts/classifiers``.  See the folder ``scripts`` for more details.
 
 ## Additional data
 
