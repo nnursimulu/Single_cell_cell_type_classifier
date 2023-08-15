@@ -1,6 +1,6 @@
 # Single-cell cell-type classifier
 
-The data used to build the single-cell cell-type classifiers comes from https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis and concerns the publication by Zheng et al, 2017.  Running scripts in this repository requires R, a Unix shell and Python3.  I have run this code using Python v3.6.8 and using the Niagara supercomputer.  The section dependencies hightlights the dependencies required and the specific version with which the scripts were run.  Some scripts are written in a manner suited for parallel computing, when intense resources were found to be required.
+Code and data in this repository is for building and testing cell type classifiers based on the PBMC68K dataset.  The data used to build the single-cell cell-type classifiers comes from https://github.com/10XGenomics/single-cell-3prime-paper/tree/master/pbmc68k_analysis and concerns the publication by Zheng et al, 2017.  Running scripts in this repository requires R, a Unix shell and Python3.  I have run this code using Python v3.6.8 and using the Niagara supercomputer.  The section dependencies hightlights the dependencies required and the specific version with which the scripts were run.  Some scripts are written in a manner suited for parallel computing, when intense resources were found to be required.
 
 Follow the following steps to reproduce the results I obtained.
 
@@ -11,11 +11,17 @@ The overall data consists of the 1000 most highly-expressed genes from the 68K P
 
 ### 2. Perform data splitting
 
-Run ``scripts/preprocess/split_into_train_and_test.py`` to split the count matrix and labels into training, validation and test sets.  Specify the absolute path RAW_DATA of the input folder--the one containing ``count_matrix.in`` and ``class_labels.in``--and the absolute path to the output folder PROCESSED_DATA where the split data will be written.
+Run ``scripts/preprocess/split_into_train_and_test.py`` to split the count matrix and labels into training, validation and test sets.  Specify the absolute path ``RAW_DATA`` of the input folder--the one containing ``count_matrix.in`` and ``class_labels.in``--and the absolute path to the output folder ``PROCESSED_DATA`` where the split data will be written.
 
 ```
 split_into_train_and_test.py --input_folder RAW_DATA --output_folder PROCESSED_DATA  
 ````
+
+### 3. 
+
+## Additional data
+
+My technical report refers to results of feature importance where I build feature vectors with a 1 for a feature/gene and 0 elsewhere, and assess the class predicted by the neural network classifier.  The file ``suppl/FEATURE_IMPORTANCE_gene_by_class.out`` contains the class ID predicted and the features/genes sorted in decreasing order of probability.  Therefore, the top entry indicates the gene most predictive of the class in question.  These results are preliminary and will require more systematic analyses before interpretation. 
 
 ## Dependencies
 
