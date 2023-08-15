@@ -9,6 +9,7 @@ processed_data
 
 # Ignore folder with results
 results
+test_maj_results
 
 # Ignore folder with graphs
 graphs

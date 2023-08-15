@@ -136,5 +136,6 @@ if __name__ == '__main__':
     plt.ylabel('average loss')
     plt.xlabel('epoch number')
     plt.legend(loc="upper right")
+    plt.title("Average loss on training and validation over cross-validation")
     plt.show()
 

@@ -9,6 +9,21 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
 import tensorflow as tf
 
+def write_raw_predictions(predicted_IDs, actual_IDs, results_file):
+    """Write raw predictions and actual IDs out.
+    
+    Parameters:
+    predicted_IDs: list of predicted IDs.
+    actual_IDs: list of actual IDs.
+    results_file: (str) path to where results will be written.
+    """
+
+    with open(results_file, "w") as writer:
+        for pred, actual in zip(predicted_IDs, actual_IDs):
+            writer.write(str(pred) + "\t" + str(actual) + "\n")
+
+
+
 if __name__ == '__main__':
     
     parser = ArgumentParser(description="Train various classifiers on training data and test; write out the results.")
@@ -45,6 +60,7 @@ if __name__ == '__main__':
     knn.fit(training_fvs, training_label_IDs)
     predicted_knn_label_IDs = knn.predict(test_fvs)
     utils.write_out_optimal_results(predicted_knn_label_IDs, test_label_IDs, id_to_label, "knn", knn_results_file)
+    write_raw_predictions(predicted_knn_label_IDs, test_label_IDs, results_folder + "/ALL_PREDs_on_test_knn.out")
 
     ############################################
     # Now, for RF classifier-balanced.
@@ -63,6 +79,7 @@ if __name__ == '__main__':
     rf_bal.fit(training_fvs, training_label_IDs)
     predicted_rf_not_bal_label_IDs = rf_bal.predict(test_fvs)
     utils.write_out_optimal_results(predicted_rf_not_bal_label_IDs, test_label_IDs, id_to_label, "RF-not balanced", rf_bal_results_file)
+    write_raw_predictions(predicted_rf_not_bal_label_IDs, test_label_IDs, results_folder + "/ALL_PREDs_on_test_RF.out")
 
     ############################################
     # Now, for SVM-balanced
@@ -116,3 +133,4 @@ if __name__ == '__main__':
     logits = model.predict(test_fvs)
     predicted_nn_labels = utils.transform_from_nn_pred(logits)
     utils.write_out_optimal_results(predicted_nn_labels, test_label_IDs, id_to_label, "NN", nn_results_file)
+    write_raw_predictions(predicted_nn_labels, test_label_IDs, results_folder + "/ALL_PREDs_on_test_NN.out")
