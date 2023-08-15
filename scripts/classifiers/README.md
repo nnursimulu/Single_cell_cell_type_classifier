@@ -25,7 +25,7 @@ I wrote ``run_optimal_classifiers.py`` from hyperparameters from cross-validatio
 
 ## Analysis: Calculate feature importance of NN
 
-``calculate_feature_importance_NN.py`` finds which genes are importance for predictions on which class and produces ``$RESULTS/FEATURE_IMPORTANCE_gene_by_class.out``, a copy of which is in the ``suppl`` directory in repository's main directory.
+``calculate_feature_importance_NN.py`` finds which genes individually contribute to prediction on which class and produces ``$RESULTS/FEATURE_IMPORTANCE_gene_by_class.out``, a copy of which is in the ``suppl`` directory in repository's main directory.
 
 ## Future work: Majority rule on combined classifiers
 
