@@ -2,7 +2,7 @@
 
 Run these scripts only after preprocessing the raw data.
 
-Retain the values of ``RAW_DATA``--the path to the folder containing ``count_matrix.in`` and ``class_labels.in``--and the absolute path to the folder ``PROCESSED_DATA`` where the split data has been written for cross-validation and testing, as these are typically used during the scripts below.  Find parameters required to run each script using ``python3 script_name.py --help``.  For ease of understanding, define ``RESULTS`` as the path to the folder to contain results from the scripts.  Note that ``utils.py`` contains functions used frequently by the different scripts.
+Define the value of ``RAW_DATA``--the path to the folder containing ``count_matrix.in`` and ``class_labels.in``--and the absolute path to the folder ``PROCESSED_DATA`` where the split data has been written for cross-validation and testing, as these are typically used during the scripts below.  Find parameters required to run each script using ``python3 script_name.py --help``.  For ease of understanding, define ``RESULTS`` as the path to the folder to contain results from the scripts.  Note that ``utils.py`` contains functions used frequently by the different scripts.
 
 ## Cross-validation for various classifiers
 
